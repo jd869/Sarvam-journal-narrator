@@ -38,7 +38,11 @@ def require_access() -> None:
     if st.session_state.get("authenticated"):
         return
     st.markdown("## A quiet place for your memories.")
-    st.info("Public hackathon demo — for demonstration only. Judges and visitors can copy the passcode below to try Echoes.")
+    st.markdown(
+        '<div class="demo-notice"><strong>Public hackathon demo.</strong> '
+        'For demonstration only. Judges and visitors can copy the passcode below to try Echoes.</div>',
+        unsafe_allow_html=True,
+    )
     st.caption("Demo passcode · use the copy button on the right")
     st.code(passcode, language=None)
     with st.form("access"):
@@ -265,6 +269,29 @@ def render_voice() -> None:
     st.caption("Only narrating sends your sample to Sarvam. Echoes keeps no saved voice library or permanent journal database. Sarvam's own data policies apply to submitted content.")
 
 
+def render_guide() -> None:
+    st.markdown("### Your memories, ready to hear again.")
+    st.write("Turn written diary entries into audio memories you can keep and share. Listen to one moment, or bring a whole month or year together as a spoken memoir.")
+    write, recap, listen = st.columns(3)
+    for column, heading, explanation in (
+        (write, "01 · Write a memory", "Add a dated journal entry, or start with the sample journal."),
+        (recap, "02 · Bring it together", "Choose a month or year. Review and edit a recap of your memories."),
+        (listen, "03 · Hear your story", "Use your own voice sample or a preset narrator. Listen and download the audio."),
+    ):
+        with column.container(border=True):
+            st.markdown(f"**{heading}**")
+            st.caption(explanation)
+    st.markdown("#### Try the 60-second demo")
+    st.markdown(
+        "1. Click **Load sample journal** in the sidebar.\n"
+        "2. Open **Memoir** and click **Create my recap**.\n"
+        "3. Read and edit the words, then click **Narrate my memory**.\n"
+        "4. Press play and download your audio keepsake.\n\n"
+        "To hear your own voice, open **Voice**, save a 10–15-second recording with consent, "
+        "choose **My own voice**, and narrate again. The preset narrator is ready without a recording."
+    )
+
+
 def main() -> None:
     st.markdown("""
     <style>
@@ -276,33 +303,16 @@ def main() -> None:
       [data-testid="stForm"], [data-testid="stVerticalBlockBorderWrapper"] { border-radius: 14px; }
       .eyebrow { font-size: .72rem; letter-spacing: .22em; color: #92765b; font-weight: 600; }
       .intro { font-family: Georgia, serif; font-size: 1.25rem; color: #796657; max-width: 580px; }
+      .demo-notice { background: #f1ece1; color: #796657; border: 1px solid #dfcbbb;
+        border-left: 3px solid #954b35; border-radius: 10px; padding: 1rem 1.15rem; margin-bottom: 1rem; }
+      .demo-notice strong { color: #954b35; }
       .stButton > button, .stDownloadButton > button { border-radius: 9px; }
       button[kind="primary"] { background: #954b35; border-color: #954b35; }
     </style>
     <div class="eyebrow">A PERSONAL AUDIO JOURNAL · POWERED BY SARVAM</div>
     <h1>Echoes<span style="color:#b66c47">.</span></h1>
     <p class="intro">Your words. Your voice. Your memories.</p>
-    <p>Turn written diary entries into audio memories you can keep and share.
-    Listen to one moment, or bring a whole month or year together as a spoken memoir.</p>
     """, unsafe_allow_html=True)
-    write, recap, listen = st.columns(3)
-    for column, heading, explanation in (
-        (write, "01 · Write a memory", "Add a dated journal entry, or start with the sample journal."),
-        (recap, "02 · Bring it together", "Choose a month or year. Review and edit a recap of your memories."),
-        (listen, "03 · Hear your story", "Use your own voice sample or a preset narrator. Listen and download the audio."),
-    ):
-        with column.container(border=True):
-            st.markdown(f"**{heading}**")
-            st.caption(explanation)
-    with st.expander("First time here? Try the 60-second demo"):
-        st.markdown(
-            "1. Open the journal with the demo passcode shown below.\n"
-            "2. Click **Load sample journal** in the sidebar.\n"
-            "3. Open **Memoir** and click **Create my recap**. Read and edit the words.\n"
-            "4. Click **Narrate my memory**, press play, and download your keepsake.\n\n"
-            "To hear your own voice, open **Voice**, save a 10–15-second recording with consent, "
-            "choose **My own voice**, and narrate again. The preset narrator is ready without a recording."
-        )
     require_access()
     initialize()
     api_key = setting("SARVAM_API_KEY")
@@ -337,13 +347,15 @@ def main() -> None:
         if st.checkbox("I have exported what I want to keep"):
             st.button("Clear session & lock", on_click=reset_session)
 
-    journal, memoir, voice = st.tabs(["✍  Journal", "♫  Memoir", "◉  Voice"])
+    journal, memoir, voice, guide = st.tabs(["✍  Journal", "♫  Memoir", "◉  Voice", "?  Guide"])
     with journal:
         render_journal(today)
     with memoir:
         render_memoir(today, api_key)
     with voice:
         render_voice()
+    with guide:
+        render_guide()
     st.divider()
     st.caption("Public hackathon demo · For demonstration only. Session data is temporary. · Powered by Sarvam")
 
