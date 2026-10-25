@@ -282,7 +282,27 @@ def main() -> None:
     <div class="eyebrow">A PERSONAL AUDIO JOURNAL · POWERED BY SARVAM</div>
     <h1>Echoes<span style="color:#b66c47">.</span></h1>
     <p class="intro">Your words. Your voice. Your memories.</p>
+    <p>Turn written diary entries into audio memories you can keep and share.
+    Listen to one moment, or bring a whole month or year together as a spoken memoir.</p>
     """, unsafe_allow_html=True)
+    write, recap, listen = st.columns(3)
+    for column, heading, explanation in (
+        (write, "01 · Write a memory", "Add a dated journal entry, or start with the sample journal."),
+        (recap, "02 · Bring it together", "Choose a month or year. Review and edit a recap of your memories."),
+        (listen, "03 · Hear your story", "Use your own voice sample or a preset narrator. Listen and download the audio."),
+    ):
+        with column.container(border=True):
+            st.markdown(f"**{heading}**")
+            st.caption(explanation)
+    with st.expander("First time here? Try the 60-second demo"):
+        st.markdown(
+            "1. Open the journal with the demo passcode shown below.\n"
+            "2. Click **Load sample journal** in the sidebar.\n"
+            "3. Open **Memoir** and click **Create my recap**. Read and edit the words.\n"
+            "4. Click **Narrate my memory**, press play, and download your keepsake.\n\n"
+            "To hear your own voice, open **Voice**, save a 10–15-second recording with consent, "
+            "choose **My own voice**, and narrate again. The preset narrator is ready without a recording."
+        )
     require_access()
     initialize()
     api_key = setting("SARVAM_API_KEY")

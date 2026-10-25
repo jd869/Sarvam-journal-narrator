@@ -85,7 +85,7 @@ class AppFlowTests(unittest.TestCase):
     def test_failed_generation_keeps_draft_and_does_not_retry(self):
         with patch("echoes.SarvamGateway.narrate", side_effect=RuntimeError("offline")) as narrate:
             app = self.open_app()
-            next(item for item in app.text_area if item.label == "Narration script").set_value("A memory worth keeping.")
+            next(item for item in app.text_area if item.label == "Narration script").set_value("A memory worth keeping.").run()
             button(app, "▶ Narrate my memory").click().run()
             self.assertEqual(app.session_state["script_draft"], "A memory worth keeping.")
             self.assertEqual(len(app.exception), 0)
