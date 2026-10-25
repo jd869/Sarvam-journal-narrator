@@ -1,0 +1,2 @@
+sarvamai==0.1.37
+streamlit==1.66.1
