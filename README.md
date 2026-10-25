@@ -12,7 +12,7 @@ python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-Create `.env` using `.env.example` and enter your Sarvam key and a private demo
+Create `.env` using `.env.example` and enter your Sarvam key and a demo
 passcode. Then load it without printing its contents:
 
 ```bash
@@ -57,7 +57,7 @@ can be narrated directly without paying for a recap.
 - Journal, reference clip, drafts, and generated audio are held in server session memory. They may be lost on refresh, disconnect, restart, or redeploy. Export JSON and download WAV files to keep them.
 - JSON export contains entries, not the voice sample or audio. Import replaces entries after you check the confirmation box.
 - Narration sends text, and own-voice narration also sends the sample, to Sarvam. Recaps send the selected journal entries. Sarvam's data policies apply.
-- The passcode is a demo gate, not individual accounts or durable private storage. **Clear session & lock** removes the session's data. **Forget my voice** removes the active sample and generated audio from the session.
+- This is a public hackathon demo. The login page displays the demo passcode in a copyable block for judges and visitors. It is not private access control; the Sarvam API key stays hidden on the server. **Clear session & lock** removes the session's data. **Forget my voice** removes the active sample and generated audio from the session.
 - `.env`, `.streamlit/secrets.toml`, the virtual environment, and generated audio are ignored. Do not upload them to GitHub.
 
 ## Deploy to Streamlit Community Cloud
@@ -68,7 +68,7 @@ can be narrated directly without paying for a recap.
 
 ```toml
 SARVAM_API_KEY = "your-sarvam-key"
-DEMO_PASSCODE = "your-private-demo-passcode"
+DEMO_PASSCODE = "your-public-demo-passcode"
 ```
 
 4. Deploy and open the app. No external database or system packages are needed.

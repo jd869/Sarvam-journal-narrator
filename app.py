@@ -38,9 +38,11 @@ def require_access() -> None:
     if st.session_state.get("authenticated"):
         return
     st.markdown("## A quiet place for your memories.")
-    st.write("Enter the demo passcode to open your journal.")
+    st.info("Public hackathon demo — for demonstration only. Judges and visitors can copy the passcode below to try Echoes.")
+    st.caption("Demo passcode · use the copy button on the right")
+    st.code(passcode, language=None)
     with st.form("access"):
-        entered = st.text_input("Demo passcode", type="password")
+        entered = st.text_input("Demo passcode", type="password", placeholder="Paste the demo passcode shown above")
         submitted = st.form_submit_button("Open my journal", type="primary")
     if submitted:
         if hmac.compare_digest(entered.encode(), passcode.encode()):
@@ -323,7 +325,7 @@ def main() -> None:
     with voice:
         render_voice()
     st.divider()
-    st.caption("Made for the moments that deserve to be heard again. · Sarvam 105B + Bulbul + Voice Cloning")
+    st.caption("Public hackathon demo · For demonstration only. Session data is temporary. · Powered by Sarvam")
 
 
 if __name__ == "__main__":

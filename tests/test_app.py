@@ -41,6 +41,8 @@ class AppFlowTests(unittest.TestCase):
     def test_passcode_gate_and_missing_configuration(self):
         app = AppTest.from_file(APP, default_timeout=20).run()
         self.assertEqual(len(app.exception), 0)
+        self.assertTrue(any("Public hackathon demo" in item.value for item in app.info))
+        self.assertEqual(app.code[0].value, "offline-test-passcode")
         self.assertFalse(any(item.label == "✦ Create my recap" for item in app.button))
         app.text_input[0].set_value("incorrect")
         button(app, "Open my journal").click().run()
